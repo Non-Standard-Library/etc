@@ -113,18 +113,6 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
         checkRep();
         return result;
     }
-
-    /**
-     * If this.vertices does not include vertex,
-     * add vertex to this.vertices.
-     * 
-     * @param vertex to check.
-     */
-    private void validateVertex(Vertex<L> vertex) {
-        if (!this.vertices.contains(vertex)) {
-            this.vertices.add(vertex);
-        }
-    }
     
     @Override
     public boolean remove(L vertex) {
@@ -247,8 +235,10 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
 }
 
 /**
- * TODO specification
- * Mutable.
+ * Representing a vertex in some graph.
+ * This class also expresses incoming vertices and outgoing vertices.
+ * This is a mutable type such that the list of sources and targets
+ * can change. But the value the vertex represents is of a immutable type.
  * This class is internal to the rep of ConcreteVerticesGraph.
  * 
  * <p>PS2 instructions: the specification and implementation of this class is

@@ -161,7 +161,7 @@ public class ConcreteVerticesGraphTest extends GraphInstanceTest {
         // Test cases:
         //   A vertex
         final String LABEL = "Picasso";
-        Vertex<String> vertex = new Vertex(LABEL);
+        Vertex<String> vertex = new Vertex<>(LABEL);
         assertEquals(LABEL, vertex.getValue());
     }
 
@@ -202,7 +202,7 @@ public class ConcreteVerticesGraphTest extends GraphInstanceTest {
             Vertex<String> source = new Vertex<>(labels[i]);
             vertex.addSource(source, WEIGHT);
         }
-        assertEquals(endIdx - startIdx, vertex.getSources().size());
+        assertEquals(endIdx - (long)startIdx, vertex.getSources().size());
     }
 
     @Test

@@ -259,14 +259,14 @@ class Edge<L> {
      * 
      * @return source.
      */
-    public L source() { return this.SOURCE; } // TODO
+    public L source() { return this.SOURCE; }
 
     /**
      * Get target of the edge.
      * 
      * @return target.
      */
-    public L target() { return this.TARGET; } // TODO
+    public L target() { return this.TARGET; }
 
     /**
      * Get weight of the edge.

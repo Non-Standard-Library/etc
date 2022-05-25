@@ -38,8 +38,6 @@ public class ConcreteEdgesGraphTest extends GraphInstanceTest {
     //     0, 1, 3
     // Test Case: [vertices case space] x [edges case space] -> [actual test cases]
     //     (0, 0), (1, 0), (3, 0), (3, 1), (3, 3)
-    
-    // TODO tests for ConcreteEdgesGraph.toString()
     @Test
     public void testToStringForConcreateEdgesGraph() {
         final String[] TEST_VERTICES = {
@@ -138,18 +136,18 @@ public class ConcreteEdgesGraphTest extends GraphInstanceTest {
         final String SOURCE = "Mike";
         final String TARGET = "Compu";
         final int WEIGHT = 15;
-        Edge edge = new Edge(SOURCE, TARGET, WEIGHT);
+        Edge<String> edge = new Edge<>(SOURCE, TARGET, WEIGHT);
         final String EXPECTED = "(" + SOURCE + " -> " + TARGET + ", " + WEIGHT + ")";
         assertEquals(edge.toString(), EXPECTED);
     }
 
     @Test(expected=AssertionError.class)
     public void testNullableEdge() {
-        new Edge(null, null, 10);
+        new Edge<Object>(null, null, 10);
     }
 
     @Test(expected=AssertionError.class)
     public void testZeroWeight() {
-        new Edge("Cam", "Kernighan", 0);
+        new Edge<String>("Cam", "Kernighan", 0);
     }
 }
