@@ -28,8 +28,6 @@ public class ConcreteEdgesGraph<L> implements Graph<L> {
     //   Every element in vertices represents a vertex containing specific
     //   value in a graph.
     //
-    //   In any graph, at least one vertex has to exist.
-    //
     //   (v1, v2) != (v2, v1) where (v1, v2) and (v2, v1) belong to E
     //   for some graph G = (V, E).
 
@@ -72,24 +70,19 @@ public class ConcreteEdgesGraph<L> implements Graph<L> {
         assert edges.size() <= vertices.size() * (vertices.size() - 1);
         assert !containsNull(vertices);
         assert !containsNull(edges);
-        assert checkIrreflexivity();
         assert containsAllVertex();
     }
 
+    /**
+     * @breif check if any container contains null.
+     * @param container to check if it contains null.
+     * @return true if the container contains null, otherwise false.
+     */
     private <T> boolean containsNull(Collection<T> container) {
         for (T e : container) {
             if (e == null) { return true; }
         }
         return false;
-    }
-
-    private boolean checkIrreflexivity() {
-        for (Edge<L> edge : this.edges) {
-            if (edge.source().equals(edge.target())) {
-                return false;
-            }
-        }
-        return true;
     }
 
     private boolean containsAllVertex() {
@@ -110,7 +103,32 @@ public class ConcreteEdgesGraph<L> implements Graph<L> {
     
     @Override
     public int set(L source, L target, int weight) {
-        vertices.add(source); vertices.add(target);
+        int returnValue = weight != 0 ? updateEdge(source, target, weight) : removeEdge(source, target);
+        checkRep();
+        return returnValue;
+    }
+
+    private int removeEdge(L source, L target) {
+        Set<L> verticesSet = this.vertices();
+        if (verticesSet.contains(source) && verticesSet.contains(target)) {
+            Map<L, Integer> targets = this.targets(source);
+            if (targets.isEmpty() || !targets.containsKey(target)) {
+                return 0;
+            } else {
+                int idxToRemove = this.edges.indexOf(new Edge<L>(source, target, 1));
+                int returnWeight = this.edges.get(idxToRemove).weight();
+                this.edges.remove(idxToRemove);
+                return returnWeight;
+            }
+        } else {
+            return 0;
+        }
+    }
+
+    private int updateEdge(L source, L target, int weight) {
+        vertices.add(source);
+        vertices.add(target);
+
         Edge<L> newEdge = new Edge<>(source, target, weight);
         int returnValue;
         if (this.edges.contains(newEdge)) {
@@ -124,7 +142,6 @@ public class ConcreteEdgesGraph<L> implements Graph<L> {
             edges.add(newEdge);
             returnValue = 0;
         }
-        checkRep();
         return returnValue;
     }
     
@@ -184,11 +201,10 @@ public class ConcreteEdgesGraph<L> implements Graph<L> {
     public String toString() {
         final StringBuilder verticeBuilder = new StringBuilder();
         for (L vertex : this.vertices) {
-            verticeBuilder.append(vertex)
-              .append(", ");
+            verticeBuilder.append(vertex).append(", ");
         }
         final String VERTICES_STR = verticeBuilder.length() != 0 ?
-                                    "{ " + verticeBuilder.substring(0, verticeBuilder.length() - 2) + " }\n" :
+                                    "{ " + verticeBuilder.substring(0, verticeBuilder.length() - 2) + " }" :
                                     "{ }";
 
         final StringBuilder edgesBuilder = new StringBuilder();
